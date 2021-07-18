@@ -2,6 +2,22 @@ cmake_minimum_required (VERSION 3.0)
 
 project (ws-chess)
 
+function(create_library lib_name)
+  set(library_name ${lib_name}) 
+
+  file(GLOB src_files
+      "*.cpp"
+  )
+
+  add_library(
+    ${library_name}
+    ${src_files}
+    )
+
+  target_include_directories(${library_name} INTERFACE ${CMAKE_SOURCE_DIR})
+endfunction()
+
+
 include(FetchContent)
 FetchContent_Declare(
   googletest
