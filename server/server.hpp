@@ -13,14 +13,6 @@
 #include "../libs/simple-web-sockets/client_ws.hpp"
 #include "../libs/json/single_include/nlohmann/json.hpp"
 
-#include "communication/identification.hpp"
-#include "communication/error.hpp"
-#include "communication/messages.hpp"
-#include "communication/error.hpp"
-#include "communication/generic_message.hpp"
-#include "communication/state_update.hpp"
-#include "game/player.hpp"
-
 using WsServer = SimpleWeb::SocketServer<SimpleWeb::WS>;
 using WsClient = SimpleWeb::SocketClient<SimpleWeb::WS>;
 using WsEndpoint = SimpleWeb::SocketServerBase<SimpleWeb::WS>::Endpoint;
@@ -44,7 +36,6 @@ private:
 
 private:
   WsServer mWsServer;
-  std::unordered_map<std::string, Player> mPlayers;
 };
 
 std::string GetConnectionId(const WsServer::Connection &conn);

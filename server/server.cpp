@@ -44,7 +44,6 @@ WsEndpoint &Server::AddGenericEndpoint(const std::string name)
 
   // See RFC 6455 7.4.1. for status codes
   endpoint.on_close = [this](shared_ptr<WsServer::Connection> connection, int status, const string & /*reason*/) {
-    mPlayers.erase(GetConnectionId(*connection));
     cout << "Server: Closed connection " << connection.get() << " with status code " << status << endl;
   };
 
@@ -55,7 +54,6 @@ WsEndpoint &Server::AddGenericEndpoint(const std::string name)
 
   // See http://www.boost.org/doc/libs/1_55_0/doc/html/boost_asio/reference.html, Error Codes for error code meanings
   endpoint.on_error = [this](shared_ptr<WsServer::Connection> connection, const SimpleWeb::error_code &ec) {
-    mPlayers.erase(GetConnectionId(*connection));
     cout << "Server: Error in connection " << connection.get() << ". "
          << "Error: " << ec << ", error message: " << ec.message() << endl;
   };
@@ -76,42 +74,8 @@ WsEndpoint &Server::AddGameEndpoint()
     if (id.empty())
     {
       cout << "No id found for connection " << connection.get() << endl;
-      json error = Error("No id found for connection", Errors::NO_ID_FOUND);
-      connection->send(error.dump(), HandleError);
-      return;
-    }
-
-    //  Check type of the message.
-    auto payloadJson = json::parse(payload);
-    auto type = payloadJson["type"].get<std::string>();
-
-    if (type == Messages::Incoming::IDENTIFICATION)
-    {
-      auto incoming = payloadJson.get<WsChess::Identification>();
-
-      mPlayers.insert({id, Player(id, incoming.name, connection.get())});
-      LogPlayers();
-
-      json confirm = GenericMessage(Messages::Outgoing::IDENT_CONFIRM, id);
-      connection->send(confirm.dump(), HandleError);
-      return;
-    }
-
-    auto playerIdPair = mPlayers.find(id);
-
-    if (playerIdPair == mPlayers.end())
-    {
-      json error = Error("Player not found", Errors::NO_PLAYER_FOUND);
-      connection->send(error.dump(), HandleError);
-    }
-
-    auto &player = playerIdPair->second;
-
-    if (type == Messages::Incoming::MOVEMENT)
-    {
-      auto incoming = payloadJson.get<WsChess::Pos>();
-      player.SetPos(incoming);
-      NotifyPlayersOfChanges();
+      // json error = Error("No id found for connection", Errors::NO_ID_FOUND);
+      // connection->send(error.dump(), HandleError);
       return;
     }
 
@@ -128,20 +92,11 @@ WsEndpoint &Server::AddGameEndpoint()
 void WsChess::Server::LogPlayers()
 {
   cout << "Logging all players" << endl;
-  for (auto &pair : mPlayers)
-  {
-    cout << "\t" << pair.first << " " << pair.second.GetName() << endl;
-  }
 }
 
 void WsChess::Server::NotifyPlayersOfChanges()
 {
-  for (auto &playerPair : mPlayers)
-  {
-    auto &player = playerPair.second;
-    json stateUpdate = StateUpdate(Messages::Outgoing::STATE_UPDATE, &mPlayers);
-    player.GetConnection()->send(stateUpdate.dump(), HandleError);
-  }
+
 }
 
 std::string GetConnectionId(const WsServer::Connection &conn)
