@@ -68,7 +68,10 @@
     "typeinfo": "cpp",
     "valarray": "cpp",
     "variant": "cpp",
-    "*.ipp": "cpp"
+    "*.ipp": "cpp",
+    "any": "cpp",
+    "bit": "cpp",
+    "shared_mutex": "cpp"
   },
   "C_Cpp.default.configurationProvider": "vector-of-bool.cmake-tools"
 }

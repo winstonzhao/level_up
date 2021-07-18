@@ -1,5 +1,5 @@
 
-#include "server.hpp"
+#include <server/server.hpp>
 
 int main()
 {
