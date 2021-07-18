@@ -87,6 +87,8 @@ WsEndpoint &Server::AddGameEndpoint()
     // connection->send is an asynchronous function
     connection->send(payload, HandleError);
   };
+
+  return endpoint;
 }
 
 void WsChess::Server::LogPlayers()

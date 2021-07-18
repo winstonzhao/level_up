@@ -364,6 +364,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+build
 
 ##### JetBrains
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and WebStorm
