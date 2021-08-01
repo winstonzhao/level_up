@@ -25,6 +25,21 @@ namespace LevelUp
         return GetSuiteString(mSuite) + GetCardValueString(mValue);
     }
 
+    bool Card::operator==(const Card& other) const
+    {
+        return other.mValue == mValue && other.mSuite == mSuite;
+    }
+
+    bool Card::operator!=(const Card& other) const
+    {
+        return !(other == *this);
+    }
+
+    Card Card::operator=(const Card &other) const
+    {
+        return Card(other.mSuite, other.mValue);
+    }
+
     // Util Definitions
     std::string GetSuiteString(Suite s)
     {

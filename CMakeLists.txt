@@ -1,6 +1,7 @@
 cmake_minimum_required (VERSION 3.0)
-
 project (ws-chess)
+
+set(CMAKE_BUILD_TYPE Debug)
 
 function(create_library lib_name)
   set(library_name ${lib_name}) 

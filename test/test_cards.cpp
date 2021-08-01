@@ -42,3 +42,15 @@ TEST(TestShuffle, GenerateShuffledDecks) {
   EXPECT_EQ(numbers[14], 2);
   EXPECT_EQ(numbers[15], 2);
 }
+
+TEST(TestCard, TestEqual)
+{
+  EXPECT_EQ(Card(Suite::HEART, 5), Card(Suite::HEART, 5));
+  EXPECT_EQ(Card(Suite::JOKER, 14), Card(Suite::JOKER, 14));
+}
+
+TEST(TestCard, TestNotEqual)
+{
+  EXPECT_NE(Card(Suite::HEART, 5), Card(Suite::SPADE, 5));
+  EXPECT_NE(Card(Suite::JOKER, 14), Card(Suite::JOKER, 15));
+}

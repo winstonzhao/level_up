@@ -11,6 +11,11 @@ cd build
 cmake ..
 make
 
-./test/test
+if [ $? -eq 0 ]; then
+   ./test/test
+else
+   echo Build Failed...
+fi
+
 
 cd $source_dir
